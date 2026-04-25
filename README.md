@@ -1,29 +1,45 @@
-# Movie-Recommendation-System
-Implementation of movie recommendation system using Collaborative Filtering Technique using C language.
+# Movie Recommendation System
 
-# Algorithm:
+A profiling-guided Movie Recommendation system optimized using C. This program leverages clustering (k-means) and Pearson correlation for predicting movie ratings using Collaborative Filtering.
 
-1. Creation of utility matrix of ratings between users and movies.
-2. Finding similarity of new user (or concerned user) with other users using Centered Cosine Similarity (Pearson's Correlation).
-3. Clustering of users based on similarity using k means clustering.
-4. Prediction of movies using Collaborative Filtering technique (Low Rank Matrix Factorization) based on clusters obtained in step 3.
-5. Top 10 movies printed on command line.
+## Build Instructions
 
-Instructions to run this system:
+### Baseline Build
+```bash
+gcc -O0 ui.c kmeans.c matrix_normalization.c pearsons.c predictions.c recommender.c sorting.c utility_matrix.c -o recsys_base -lm
+```
 
-1. Open recommender.c and correct all the paths. (on line 20,55,56,57 and 63).
-2. Open ui.c and correct all the paths. (on line 15, 41, 64, 67, 68).
-3. Open command line and locate the directory where source code is stored and type: `gcc ui.c kmeans.c matrix_normalization.c pearsons.c predictions.c recommender.c sorting.c utility_matrix.c`
-4. Type `a` on command line to execute the program.
+### Optimized Single-Thread Build
+```bash
+gcc -O3 -march=native ui.c kmeans.c matrix_normalization.c pearsons.c predictions.c recommender.c sorting.c utility_matrix.c -o recsys_opt_st -lm
+```
 
-# Output:
-https://imgur.com/a/dk3IY
+### Optimized OpenMP Build
+```bash
+gcc -O3 -march=native -fopenmp ui.c kmeans.c matrix_normalization.c pearsons.c predictions.c recommender.c sorting.c utility_matrix.c -o recsys_opt_omp -lm
+```
 
-RMS Error: 0.865843
+## Running Benchmarks and Verification
+To benchmark iterations across "Cold" (Data Parse + Prediction) and "Warm" (Cache + Prediction) profiles:
+```bash
+export OMP_NUM_THREADS=4
+./run_benchmark.sh
+```
 
-# Authors and Maintainers
+To verify correctness output between optimization trees:
+```bash
+./verify_correctness.sh
+```
 
-1. Shubham Bhatnagar (https://github.com/shubham-bhatnagar)
-2. Udhav Sharma (https://github.com/UdhavSharma)
+## Python Plot Generation & Reproducibility
+To construct graphing analytics against `ratings_learn.csv` sizes:
+```bash
+python3 scripts/analyze_dataset.py
+python3 scripts/generate_plots.py
+```
+*(Graphs correspond inside `report/figures/` directories).*
 
-If you encounter any problems, please contact directly or post it in issues.
+For detailed measurements mapping execution footprints and `gprof` logs across structural implementations, see the [Benchmark Results](benchmark_results.md) page or generate the included LaTeX document:
+```bash
+./report/build_report.sh
+```

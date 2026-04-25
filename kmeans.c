@@ -3,6 +3,7 @@
 #include <math.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <omp.h>
 
 #define sqr(x) ((x)*(x))
 
@@ -14,7 +15,7 @@
 
 void fail(char *str)
   {
-    printf(str);
+    printf("%s", str);
     exit(-1);
   }
 
@@ -149,7 +150,7 @@ void get_cluster_member_count(int n, int k, int *cluster_assignment_index, int *
 void cluster_diag(int dim, int n, int k, double *X, int *cluster_assignment_index, double *cluster_centroid)
   {
     int cluster_member_count[MAX_CLUSTERS];
-    int ii;
+    //int ii;
 
     get_cluster_member_count(n, k, cluster_assignment_index, cluster_member_count);
 
@@ -189,9 +190,9 @@ void kmeans(
             int   *cluster_assignment_final  // output
            )
   {
-    double *dist                    = (double *)malloc(sizeof(double) * n * k);
-    int   *cluster_assignment_cur  = (int *)malloc(sizeof(int) * n);
-    int   *cluster_assignment_prev = (int *)malloc(sizeof(int) * n);
+    double *dist                    = (double *)calloc(1, sizeof(double) * n * k);
+    int   *cluster_assignment_cur  = (int *)calloc(1, sizeof(int) * n);
+    int   *cluster_assignment_prev = (int *)calloc(1, sizeof(int) * n);
 
 
     if (!dist || !cluster_assignment_cur || !cluster_assignment_prev)

@@ -18,13 +18,13 @@ double calc_average(double *utility_matrix,int No_of_movies){ //inputs: utility 
 }
 
 void normalize_matrix(double *utility_matrix, double *normalized_matrix, int No_of_users, int No_of_movies){ //inputs: utility matrix and new matrix to save normalized ratings
-	int i=0,j=0;
+	int i=0;
 	for(i=0;i<No_of_users;i++){
 		//calculate average for i^th user
 		double average = calc_average(&utility_matrix[i*No_of_movies],No_of_movies);
 		
 		//traverse through each movie rating
-		for(j=0;j<No_of_movies;j++){
+		for(int j=0;j<No_of_movies;j++){
 			if(utility_matrix[i*No_of_movies + j] == 0){
 				normalized_matrix[i*No_of_movies + j] = 0;
 			}else{
