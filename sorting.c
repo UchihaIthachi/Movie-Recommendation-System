@@ -1,21 +1,32 @@
 //contains sorting
 #define MIN(a,b) (((a)<(b))?(a):(b))
 
+// Improved K-Selection insertion method.
+// Iterates exactly once through all predicted ratings, retaining only the Top-K bounds.
 void sort(int *recommended_movies, double *predicted_ratings, int no_of_recommended_movies){
-	int i=0,j=0;
-    
-    // We only process up to 1000 items as per the main loop limits
     int limit = MIN(no_of_recommended_movies, 1000);
-	
-	// Apply identical bubble sort limit without N^2 sorting the entire trailing bounds
-	for(i=0;i<limit;i++){
-		for(j=i+1;j<no_of_recommended_movies;j++){
-			if(predicted_ratings[i]<predicted_ratings[j]){
-				double temp1; int temp2;
-				temp1 = predicted_ratings[i]; temp2 = recommended_movies[i];
-				predicted_ratings[i] = predicted_ratings[j]; recommended_movies[i] = recommended_movies[j];
-				predicted_ratings[j] = temp1; recommended_movies[j] = temp2;
-			}
-		}
-	}
+    int i, j;
+    
+    // We only need to shift down and maintain sorted order within the K limit bounds.
+    for (i = 1; i < no_of_recommended_movies; i++) {
+        double current_rating = predicted_ratings[i];
+        int current_movie = recommended_movies[i];
+        
+        int bound = MIN(i, limit);
+        j = bound - 1;
+        
+        // Identical ratings tie-break via implicit ascending array tracking mapping
+        while (j >= 0 && (predicted_ratings[j] < current_rating || (predicted_ratings[j] == current_rating && recommended_movies[j] < current_movie))) {
+            if (j + 1 < limit) {
+                predicted_ratings[j + 1] = predicted_ratings[j];
+                recommended_movies[j + 1] = recommended_movies[j];
+            }
+            j--;
+        }
+        
+        if (j + 1 < limit) {
+            predicted_ratings[j + 1] = current_rating;
+            recommended_movies[j + 1] = current_movie;
+        }
+    }
 }

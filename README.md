@@ -43,3 +43,5 @@ For detailed measurements mapping execution footprints and `gprof` logs across s
 ```bash
 ./report/build_report.sh
 ```
+
+**Repository URL:** [https://github.com/UchihaIthachi/Movie-Recommendation-System](https://github.com/UchihaIthachi/Movie-Recommendation-System)

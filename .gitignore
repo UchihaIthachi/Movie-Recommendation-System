@@ -33,3 +33,15 @@ scripts/
 baseline_output.txt
 opt_verif.txt
 optimized_output.txt
+report/main.out
+opt_current_full.txt
+opt_current_top10.txt
+opt_topk_full.txt
+opt_topk_top10.txt
+recsys_opt_current
+recsys_opt_topk
+topk_benchmark_logs.txt
+topk_correctness_check.txt
+topk_investigation.md
+run_topk_benchmark.sh
+verify_topk_correctness.sh

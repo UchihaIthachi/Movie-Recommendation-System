@@ -1,13 +1,11 @@
-//header for sorting.c
-#ifndef SORT_H
-#define SORT_H
+//header for sorting.h
+#ifndef SORTING_H
+#define SORTING_H
 
 void sort(
-		  int *recommended_movies, //list of recommended movies to be sorted based on there predicted ratings
-		  
-		  double *predicted_ratings, //predicted ratings of those movies
-		  
-		  int no_of_recommended_movies // no of recommended movies (size of arrays)
+		  int *recommended_movies, //where predicted movie index will be saved
+		  double *predicted_ratings, // where predicted ratings will be saved
+		  int no_of_recommended_movies
 		  );
-		  
+
 #endif
