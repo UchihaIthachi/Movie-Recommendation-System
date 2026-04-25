@@ -11,8 +11,11 @@
 
 \geometry{margin=1in}
 
-\title{\textbf{Profiling-Guided Optimization of a C-Based Movie Recommendation System}}
-\author{Scientific Computing Assignment}
+\title{\textbf{Assignment 2 -- Recommender System Algorithms and Computational Optimizations}\\
+\large CS4553 -- Scientific Computing}
+
+\author{210167E -- Fernando T.H.L.}
+
 \date{\today}
 
 \begin{document}
@@ -31,6 +34,47 @@ This report presents a profiling-guided optimization of a C-based movie recommen
 The provided repository implements a C-based collaborative filtering pipeline consisting of utility matrix construction, matrix normalization, Pearson similarity calculation, K-Means clustering, prediction generation, and final recommendation sorting. The assignment objective was to execute the existing implementation, profile its bottlenecks, and reduce the average time required to generate a recommendation.
 
 Although the assignment mentions that natural preference matrices may have a good rank-$k$ approximation, this work treats that statement as computational motivation rather than a requirement to replace the recommender algorithm. Implementing SVD, PCA, or matrix factorization would change the algorithmic pipeline and make comparison against the original baseline less direct. Therefore, this submission focuses on optimizing the given Pearson/K-Means implementation using profiling-guided HPC techniques.
+
+\section{Usage and Reproducibility}
+
+The optimized implementation is available in the GitHub repository:
+
+\begin{center}
+\url{https://github.com/UchihaIthachi/Movie-Recommendation-System}
+\end{center}
+
+To reproduce the work, clone the repository and move into the project directory:
+
+\begin{verbatim}
+git clone https://github.com/UchihaIthachi/Movie-Recommendation-System.git
+cd Movie-Recommendation-System
+\end{verbatim}
+
+The final selected optimized single-threaded build can be compiled using:
+
+\begin{verbatim}
+gcc -O3 -march=native ui.c kmeans.c matrix_normalization.c pearsons.c \
+    predictions.c recommender.c sorting.c utility_matrix.c \
+    -o recsys_opt_st -lm
+\end{verbatim}
+
+Then run:
+
+\begin{verbatim}
+./recsys_opt_st
+\end{verbatim}
+
+The program opens an interactive menu where an existing user ID, such as
+\texttt{1}, can be used to request movie predictions. The first recommendation
+request is treated as the \textit{Cold Run}, because it includes loading and
+initialization. Later requests in the same process are treated as
+\textit{Warm Runs}, because cached data structures are reused.
+
+More detailed reproduction steps, including benchmark execution, correctness
+verification, dataset analysis, graph generation, and report building, are
+provided in the project README.\footnote{
+\url{https://github.com/UchihaIthachi/Movie-Recommendation-System/blob/master/README.md}
+}
 
 \section{Execution Environment and Dataset}
 
